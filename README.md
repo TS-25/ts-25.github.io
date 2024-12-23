@@ -1,2 +1,9 @@
-# SharpyGamerYTT.github.io
-Sharpy - Dev &amp; Programmer Protofolia Website!
+## ╭──────────── ·﻿ ﻿· ﻿·﻿ ﻿✦
+## │ ➜  SharpyGamerYTT.github.io
+## │ ➜  Experienced Developer & Programmer!
+## │ ➜  Join Our Discord Community!
+## │ ➜  https://discord.gg/9FHXRMUs49
+## ╰─────────── ·﻿ ﻿·﻿ ﻿﻿✦
+
+
+
