@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Tic Tac Toe - Player vs Bot</title>
+    <title>Tic Tac Toe - Player V Bot</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -93,7 +93,7 @@
             <div class="cell" data-index="8"></div>
         </div>
         <div class="status">
-            <p id="status">Player X's Turn</p>
+            <p id="status">Player's Turn</p>
         </div>
         <button class="restart-btn" id="restart-btn" onclick="restartGame()">Restart Game</button>
     </div>
@@ -114,25 +114,20 @@
                 return; // Ignore if the cell is already filled, game is over or it's bot's turn
             }
 
-            // Player makes a move
             gameBoard[index] = 'X';
             event.target.textContent = 'X';
-
-            // Check if player wins
             if (checkWin('X')) {
                 status.textContent = 'Player X Wins!';
                 gameOver = true;
                 restartBtn.style.display = 'block';
             } else if (gameBoard.every(cell => cell !== '')) {
-                // Check if it's a draw
                 status.textContent = 'It\'s a Draw!';
                 gameOver = true;
                 restartBtn.style.display = 'block';
             } else {
-                // Switch to bot's turn
                 currentPlayer = 'O';
                 status.textContent = 'Bot\'s Turn';
-                botMove(); // Bot plays after player
+                botMove(); 
             }
         }
 
