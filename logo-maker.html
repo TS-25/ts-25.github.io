@@ -7,7 +7,7 @@
     <title>Custom Font Generator</title>
 
     <!-- Link to Google Fonts with 50+ fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Roboto&family=Open+Sans&family=Lobster&family=Playfair+Display&family=Montserrat&family=Oswald&family=Raleway&family=Quicksand&family=Work+Sans&family=Roboto+Slab&family=Rubik&family=Poppins&family=Roboto+Mono&family=Anton&family=Inconsolata&family=Amatic+SC&family=Merriweather&family=Fira+Sans&family=Pacifico&family=Cabin&family=Indie+Flower&family=Zilla+Slab&family=Barlow&family=Bitter&family=Sacramento&family=Fredoka+One&family=Josefin+Sans&family=Lato&family=Nunito+Sans&family=Slabo+27px&family=Varela+Round&family=Ubuntu&family=Josefin+Slab&family=Patua+One&family=Righteous&family=Arvo&family=Oswald&family=Yanone+Kaffeesatz&family=Fjalla+One&family=Anton&family=Source+Sans+Pro&family=Mukta&family=Karla&family=Open+Sans+Condensed&family=Kalam&family=Baloo+Da&family=Arimo&family=Quattrocento&family=Crimson+Text&family=Be+Vietnam&family=Martel+Sans&family=Permanent+Marker&family=Viga&family=Russo+One&family=Patagonia&family=Cabin+Sketch&family=Alef&family=Fira+Mono&family=Bree+Serif&family=Rock+Salt&family=Just+Me+Again+Down+Here&family=Courgette&family=K2D&family=Acme&family=Julius+Sans+One&family=Grand+Hotel&family=Big+Shoulders+Text&family=Architects+Daughter&family=Knew+Roman&family=Luckiest+Guy&family=Shadows+Into+Light&family=Rochester&family=Spectral+SC&family=Vollkorn&family=Questrial&family=Hind&family=Zilla+Slab&family=Exo&family=Oxygen&family=Sen&family=Asap&family=Alegreya&family=Yeseva+One&family=Lora&family=Karla&family=Abril+Fatface&family=Redressed&family=Fascinate&family=Zilla+Slab&family=Inter&family=Trirong&family=Catamaran&family=Grand+Hotel&family=Arvo&family=Overlock&family=Rokkitt&family=Fauna+One&family=Slabo+27px&family=Roboto+Condensed&family=Allerta&family=Lobster+Two&family=Julius+Sans+One&family=Grand+Hotel&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto&family=Open+Sans&family=Lobster&family=Playfair+Display&family=Montserrat&family=Oswald&family=Raleway&family=Quicksand&family=Work+Sans&family=Roboto+Slab&family=Rubik&family=Poppins&family=Roboto+Mono&family=Anton&family=Inconsolata&family=Amatic+SC&family=Merriweather&family=Fira+Sans&family=Pacifico&family=Cabin&family=Indie+Flower&family=Zilla+Slab&family=Barlow&family=Bitter&family=Sacramento&family=Fredoka+One&family=Josefin+Sans&family=Lato&family=Nunito+Sans&family=Slabo+27px&family=Varela+Round&family=Ubuntu&family=Josefin+Slab&family=Patua+One&family=Righteous&family=Arvo&family=Yanone+Kaffeesatz&family=Fjalla+One&family=Source+Sans+Pro&family=Mukta&family=Karla&family=Open+Sans+Condensed&family=Kalam&family=Baloo+Da&family=Arimo&family=Quattrocento&family=Crimson+Text&family=Be+Vietnam&family=Martel+Sans&display=swap" rel="stylesheet">
 
     <style>
         body {
@@ -56,12 +56,7 @@
             display: inline-block;
             min-width: 50%;
             font-weight: bold;
-        }
-
-        .output {
-            margin-top: 20px;
-            font-size: 18px;
-            color: #333;
+            transition: font-family 0.3s ease-in-out; /* Smooth transition for font change */
         }
 
         button {
@@ -149,4 +144,16 @@
     <script>
         function applyFont() {
             const textInput = document.getElementById('text-input').value;
-            const fontSelector =
+            const fontSelector = document.getElementById('font-selector').value;
+            const textOutput = document.getElementById('text-output');
+
+            // Set the text input or default text
+            textOutput.textContent = textInput || 'Your Custom Text';
+
+            // Apply the selected font
+            textOutput.style.fontFamily = fontSelector;
+        }
+    </script>
+
+</body>
+</html>
