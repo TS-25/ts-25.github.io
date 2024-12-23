@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Tic Tac Toe Game</title>
+    <title>Tic Tac Toe - Player vs Bot</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -102,39 +102,73 @@
         const cells = document.querySelectorAll('.cell');
         const status = document.getElementById('status');
         const restartBtn = document.getElementById('restart-btn');
-        let currentPlayer = 'X';
-        let gameBoard = ['', '', '', '', '', '', '', '', '']; // Represents the game board
+        let currentPlayer = 'X';  // Player starts as 'X'
+        let gameBoard = ['', '', '', '', '', '', '', '', '']; // Empty board
         let gameOver = false;
 
-        // Function to handle click on a cell
+        // Function to handle player move
         function handleClick(event) {
             const index = event.target.dataset.index;
 
-            if (gameBoard[index] !== '' || gameOver) {
-                return; // Ignore if the cell is already filled or the game is over
+            if (gameBoard[index] !== '' || gameOver || currentPlayer === 'O') {
+                return; // Ignore if the cell is already filled, game is over or it's bot's turn
             }
 
-            // Mark the cell with the current player's symbol (X or O)
-            gameBoard[index] = currentPlayer;
-            event.target.textContent = currentPlayer;
+            // Player makes a move
+            gameBoard[index] = 'X';
+            event.target.textContent = 'X';
 
-            // Check for a win or draw
-            if (checkWin(currentPlayer)) {
-                status.textContent = `${currentPlayer} Wins!`;
+            // Check if player wins
+            if (checkWin('X')) {
+                status.textContent = 'Player X Wins!';
                 gameOver = true;
                 restartBtn.style.display = 'block';
             } else if (gameBoard.every(cell => cell !== '')) {
+                // Check if it's a draw
                 status.textContent = 'It\'s a Draw!';
                 gameOver = true;
                 restartBtn.style.display = 'block';
             } else {
-                // Switch player
-                currentPlayer = currentPlayer === 'X' ? 'O' : 'X';
-                status.textContent = `Player ${currentPlayer}'s Turn`;
+                // Switch to bot's turn
+                currentPlayer = 'O';
+                status.textContent = 'Bot\'s Turn';
+                botMove(); // Bot plays after player
             }
         }
 
-        // Function to check if a player has won
+        // Function for the bot's move (random AI)
+        function botMove() {
+            const availableMoves = gameBoard
+                .map((cell, index) => (cell === '') ? index : null)
+                .filter(index => index !== null);  // Get all available spots
+
+            if (availableMoves.length === 0) return;  // No moves left
+
+            // Random move for the bot
+            const randomMove = availableMoves[Math.floor(Math.random() * availableMoves.length)];
+            gameBoard[randomMove] = 'O';
+
+            // Update the board
+            cells[randomMove].textContent = 'O';
+
+            // Check if bot wins
+            if (checkWin('O')) {
+                status.textContent = 'Bot Wins!';
+                gameOver = true;
+                restartBtn.style.display = 'block';
+            } else if (gameBoard.every(cell => cell !== '')) {
+                // Check if it's a draw
+                status.textContent = 'It\'s a Draw!';
+                gameOver = true;
+                restartBtn.style.display = 'block';
+            } else {
+                // Switch back to player turn
+                currentPlayer = 'X';
+                status.textContent = 'Player X\'s Turn';
+            }
+        }
+
+        // Function to check for win
         function checkWin(player) {
             const winPatterns = [
                 [0, 1, 2], // Top row
@@ -156,9 +190,9 @@
         // Function to restart the game
         function restartGame() {
             gameBoard = ['', '', '', '', '', '', '', '', ''];
-            currentPlayer = 'X';
+            currentPlayer = 'X'; // Player starts again
             gameOver = false;
-            status.textContent = `Player ${currentPlayer}'s Turn`;
+            status.textContent = `Player X's Turn`;
 
             // Reset the cells
             cells.forEach(cell => {
