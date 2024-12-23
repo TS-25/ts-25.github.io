@@ -19,6 +19,9 @@
             height: 100vh;
             background-color: #f4f4f4;
             font-family: Arial, sans-serif;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
         }
         canvas {
             border: 2px solid black;
@@ -45,17 +48,31 @@
             border: none;
             border-radius: 5px;
             cursor: pointer;
-            display: none; /* Initially hidden */
+            display: none;
         }
         #restart-btn:hover {
+            background-color: #45a049;
+        }
+        #play-btn {
+            padding: 15px 30px;
+            font-size: 24px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        #play-btn:hover {
             background-color: #45a049;
         }
     </style>
 </head>
 <body>
-    <canvas id="gameCanvas" width="400" height="400"></canvas>
+    <button id="play-btn" onclick="startGame()">Play Game</button> <!-- Play Button -->
+    <canvas id="gameCanvas" width="400" height="400" style="display: none;"></canvas>
     <div id="game-over">Game Over!</div>
     <button id="restart-btn" onclick="restartGame()">Restart Game</button> <!-- Restart button -->
+
     <script>
         const canvas = document.getElementById('gameCanvas');
         const ctx = canvas.getContext('2d');
@@ -67,7 +84,7 @@
         let score;
         let gameOver = false;
         let dx = scale;
-        let dy = 0; 
+        let dy = 0;
 
         // Initialize the game
         function init() {
@@ -84,6 +101,8 @@
             gameOver = false;
             document.getElementById('game-over').style.display = 'none';
             document.getElementById('restart-btn').style.display = 'none'; // Hide restart button at the start
+            canvas.style.display = 'block'; // Show canvas
+            document.getElementById('play-btn').style.display = 'none'; // Hide play button
             gameLoop();
         }
 
@@ -177,6 +196,11 @@
             }
         }
 
+        // Start the game when the "Play" button is clicked
+        function startGame() {
+            init(); // Start the game
+        }
+
         // Restart the game
         function restartGame() {
             init(); // Reinitialize the game
@@ -185,8 +209,6 @@
         // Listen for keypresses to change direction
         document.addEventListener('keydown', changeDirection);
 
-        // Start the game when the page loads
-        init();
     </script>
 </body>
 </html>
