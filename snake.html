@@ -14,7 +14,6 @@
             align-items: center;
             background-image: url('https://wallpapercave.com/wp/wp3806523.jpg');
             height: 100vh;
-            background-color: #f4f4f4;
             font-family: Arial, sans-serif;
         }
         canvas {
@@ -64,6 +63,8 @@
         let gameOver = false;
         let dx = scale;
         let dy = 0; 
+        
+        // Initializes the game state
         function init() {
             snake = [
                 { x: 9 * scale, y: 9 * scale }
@@ -81,6 +82,7 @@
             gameLoop();
         }
 
+        // Game loop that runs every 100ms
         function gameLoop() {
             if (gameOver) {
                 document.getElementById('game-over').style.display = 'block'; 
@@ -99,6 +101,7 @@
             }, 100); 
         }
 
+        // Moves the snake
         function moveSnake() {
             let head = { x: snake[0].x + dx, y: snake[0].y + dy };
             snake.unshift(head); 
@@ -114,6 +117,7 @@
             }
         }
         
+        // Checks if the snake collides with the walls or itself
         function checkCollision() {
             let head = snake[0];
 
@@ -128,6 +132,7 @@
             }
         }
 
+        // Draws the snake
         function drawSnake() {
             snake.forEach(function (part) {
                 ctx.fillStyle = 'green';
@@ -135,21 +140,25 @@
             });
         }
 
+        // Draws the food
         function drawFood() {
             ctx.fillStyle = 'red';
             ctx.fillRect(food.x, food.y, scale, scale);
         }
 
+        // Draws the score
         function drawScore() {
-            ctx.fillstyle = 'white';
-            ctx.fillRect  = (8,5,120,25);
-            ctx.shadowColor = 'rgba(0,0,0,0.5)';
-            ctx.shadowBlur = 4; 
-            ctx.fillStyle = 'black';
+            // Draw score background
+            ctx.fillStyle = 'rgba(0, 0, 0, 0.7)';
+            ctx.fillRect(8, 5, 120, 25);
+
+            // Draw score text
+            ctx.fillStyle = 'white';
             ctx.font = 'bold 16px Arial';
             ctx.fillText('Score: ' + score, 10, 20);
         }
 
+        // Changes the snake's direction based on the key pressed
         function changeDirection(event) {
             if (event.key === "ArrowLeft" && dx === 0) {
                 dx = -scale;
@@ -166,6 +175,7 @@
             }
         }
         
+        // Restarts the game
         function restartGame() {
             init(); 
         }
