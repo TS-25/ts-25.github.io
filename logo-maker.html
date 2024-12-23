@@ -5,10 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Custom Font Generator</title>
-    
-    <!-- Link to Google Fonts with 100+ fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Roboto&family=Open+Sans&family=Lobster&family=Playfair+Display&family=Montserrat&family=Oswald&family=Raleway&family=Quicksand&family=Work+Sans&family=Roboto+Slab&family=Rubik&family=Poppins&family=Roboto+Mono&family=Anton&family=Inconsolata&family=Amatic+SC&family=Merriweather&family=Fira+Sans&family=Pacifico&family=Cabin&family=Indie+Flower&family=Zilla+Slab&family=Barlow&family=Bitter&family=Sacramento&family=Fredoka+One&family=Josefin+Sans&family=Lato&family=Nunito+Sans&family=Slabo+27px&family=Varela+Round&family=Ubuntu&family=Josefin+Slab&family=Patua+One&family=Righteous&family=Arvo&family=Oswald&family=Yanone+Kaffeesatz&family=Fjalla+One&family=Anton&family=Source+Sans+Pro&family=Mukta&family=Karla&family=Open+Sans+Condensed&family=Kalam&family=Baloo+Da&family=Arimo&family=Quattrocento&family=Crimson+Text&family=Be+Vietnam&family=Martel+Sans&family=Permanent+Marker&family=Viga&family=Russo+One&family=Patagonia&family=Cabin+Sketch&family=Alef&family=Fira+Mono&family=Bree+Serif&family=Rock+Salt&family=Just+Me+Again+Down+Here&family=Courgette&family=K2D&family=Acme&family=Julius+Sans+One&family=Grand+Hotel&family=Big+Shoulders+Text&family=Architects+Daughter&family=Knew+Roman&family=Luckiest+Guy&family=Shadows+Into+Light&family=Rochester&family=Spectral+SC&family=Vollkorn&family=Questrial&family=Hind&family=Zilla+Slab&family=Exo&family=Oxygen&family=Sen&family=Asap&family=Alegreya&family=Yeseva+One&family=Lora&family=Karla&family=Abril+Fatface&family=Redressed&family=Fascinate&family=Zilla+Slab&family=Inter&family=Trirong&family=Catamaran&family=Grand+Hotel&family=Arvo&family=Overlock&family=Rokkitt&family=Fauna+One&family=Slabo+27px&family=Roboto+Condensed&family=Allerta&family=Lobster+Two&family=Julius+Sans+One&display=swap" rel="stylesheet">
-    
+
+    <!-- Link to Google Fonts with 50+ fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Roboto&family=Open+Sans&family=Lobster&family=Playfair+Display&family=Montserrat&family=Oswald&family=Raleway&family=Quicksand&family=Work+Sans&family=Roboto+Slab&family=Rubik&family=Poppins&family=Roboto+Mono&family=Anton&family=Inconsolata&family=Amatic+SC&family=Merriweather&family=Fira+Sans&family=Pacifico&family=Cabin&family=Indie+Flower&family=Zilla+Slab&family=Barlow&family=Bitter&family=Sacramento&family=Fredoka+One&family=Josefin+Sans&family=Lato&family=Nunito+Sans&family=Slabo+27px&family=Varela+Round&family=Ubuntu&family=Josefin+Slab&family=Patua+One&family=Righteous&family=Arvo&family=Oswald&family=Yanone+Kaffeesatz&family=Fjalla+One&family=Anton&family=Source+Sans+Pro&family=Mukta&family=Karla&family=Open+Sans+Condensed&family=Kalam&family=Baloo+Da&family=Arimo&family=Quattrocento&family=Crimson+Text&family=Be+Vietnam&family=Martel+Sans&family=Permanent+Marker&family=Viga&family=Russo+One&family=Patagonia&family=Cabin+Sketch&family=Alef&family=Fira+Mono&family=Bree+Serif&family=Rock+Salt&family=Just+Me+Again+Down+Here&family=Courgette&family=K2D&family=Acme&family=Julius+Sans+One&family=Grand+Hotel&family=Big+Shoulders+Text&family=Architects+Daughter&family=Knew+Roman&family=Luckiest+Guy&family=Shadows+Into+Light&family=Rochester&family=Spectral+SC&family=Vollkorn&family=Questrial&family=Hind&family=Zilla+Slab&family=Exo&family=Oxygen&family=Sen&family=Asap&family=Alegreya&family=Yeseva+One&family=Lora&family=Karla&family=Abril+Fatface&family=Redressed&family=Fascinate&family=Zilla+Slab&family=Inter&family=Trirong&family=Catamaran&family=Grand+Hotel&family=Arvo&family=Overlock&family=Rokkitt&family=Fauna+One&family=Slabo+27px&family=Roboto+Condensed&family=Allerta&family=Lobster+Two&family=Julius+Sans+One&family=Grand+Hotel&display=swap" rel="stylesheet">
+
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -126,10 +126,8 @@
             <option value="Patua One">Patua One</option>
             <option value="Righteous">Righteous</option>
             <option value="Arvo">Arvo</option>
-            <option value="Oswald">Oswald</option>
             <option value="Yanone Kaffeesatz">Yanone Kaffeesatz</option>
             <option value="Fjalla One">Fjalla One</option>
-            <option value="Anton">Anton</option>
             <option value="Source Sans Pro">Source Sans Pro</option>
             <option value="Mukta">Mukta</option>
             <option value="Karla">Karla</option>
@@ -138,4 +136,17 @@
             <option value="Baloo Da">Baloo Da</option>
             <option value="Arimo">Arimo</option>
             <option value="Quattrocento">Quattrocento</option>
-            <option value="Crimson Text">
+            <option value="Crimson Text">Crimson Text</option>
+            <option value="Be Vietnam">Be Vietnam</option>
+            <option value="Martel Sans">Martel Sans</option>
+        </select>
+
+        <div id="text-output">Your Custom Text</div>
+
+        <button onclick="applyFont()">Generate Font</button>
+    </div>
+
+    <script>
+        function applyFont() {
+            const textInput = document.getElementById('text-input').value;
+            const fontSelector =
