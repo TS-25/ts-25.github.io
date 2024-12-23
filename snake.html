@@ -141,6 +141,10 @@
         }
 
         function drawScore() {
+            ctx.fillstyle = 'white';
+            ctx.fillRect  = (8,5,120,25);
+            ctx.shadowColor = 'rgba(0,0,0,0.5)';
+            ctx.shadowBlur = 4; 
             ctx.fillStyle = 'black';
             ctx.font = 'bold 16px Arial';
             ctx.fillText('Score: ' + score, 10, 20);
