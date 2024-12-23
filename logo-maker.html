@@ -92,7 +92,7 @@
         const logoContainer = document.getElementById('logo-container');
         const generatedLogo = document.getElementById('generated-logo');
 
-        generateBtn.addEventListener('click', async () => {
+        generateBtn.addEventListener('click', () => {
             const description = descriptionInput.value.trim();
 
             if (!description) {
@@ -104,29 +104,16 @@
             loadingText.style.display = 'block';
             logoContainer.style.display = 'none';
 
-            try {
-                const response = await fetch('/generate-logo', {  // Assuming you have an API endpoint on the back-end
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({ description })
-                });
+            // Simulating the AI image generation process
+            setTimeout(() => {
+                // Simulating an AI response with a placeholder image
+                const placeholderLogoUrl = 'https://via.placeholder.com/200/4CAF50/ffffff?text=Logo+Generated'; 
 
-                const data = await response.json();
-                if (data.success) {
-                    // Show the generated image
-                    generatedLogo.src = data.logoUrl;
-                    loadingText.style.display = 'none';
-                    logoContainer.style.display = 'block';
-                } else {
-                    alert('Failed to generate logo. Try again!');
-                    loadingText.style.display = 'none';
-                }
-            } catch (error) {
-                alert('Error generating logo. Please try again later.');
+                // Update the UI with the generated logo
+                generatedLogo.src = placeholderLogoUrl;
                 loadingText.style.display = 'none';
-            }
+                logoContainer.style.display = 'block';
+            }, 2000); // Simulate a 2-second delay for logo generation
         });
     </script>
 
