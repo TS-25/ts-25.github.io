@@ -4,211 +4,174 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Snake Game - By SharpyGamerYTT</title>
+    <title>Tic Tac Toe Game</title>
     <style>
         body {
+            font-family: Arial, sans-serif;
             margin: 0;
             padding: 0;
             display: flex;
             justify-content: center;
             align-items: center;
-            background-image: url('https://media.discordapp.net/attachments/1308851272329203723/1320790718100541440/frozen-winter-forest-with-snow-covered-trees-christmas-holiday-background-generative-ai_634053-5933.png?ex=676ae1b6&is=67699036&hm=5e08e341b13903d666ae5419640c7503a468d089471175f4aeb8ac415d6abad2&=&format=webp&quality=lossless&width=584&height=389');
-            background-size: cover;
-            background-position: center;
-            width: 100%;
             height: 100vh;
             background-color: #f4f4f4;
-            font-family: Arial, sans-serif;
-            flex-direction: column;
-            align-items: center;
+        }
+
+        .game-container {
+            text-align: center;
+            border: 2px solid #333;
+            width: 300px;
+            padding: 20px;
+            background-color: white;
+            border-radius: 8px;
+        }
+
+        h1 {
+            margin-bottom: 20px;
+        }
+
+        .board {
+            display: grid;
+            grid-template-columns: repeat(3, 100px);
+            grid-template-rows: repeat(3, 100px);
+            gap: 5px;
+        }
+
+        .cell {
+            width: 100px;
+            height: 100px;
+            background-color: #f1f1f1;
+            display: flex;
             justify-content: center;
-        }
-        canvas {
-            border: 2px solid bal;
-        }
-        #game-over {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
+            align-items: center;
             font-size: 36px;
             font-weight: bold;
-            color: red;
-            display: none;
+            cursor: pointer;
+            border: 1px solid #ccc;
+            border-radius: 8px;
         }
-        #restart-btn {
-            position: absolute;
-            top: 60%;
-            left: 50%;
-            transform: translateX(-50%);
+
+        .cell:hover {
+            background-color: #ddd;
+        }
+
+        .status {
+            margin-top: 20px;
+        }
+
+        .restart-btn {
+            margin-top: 20px;
             padding: 10px 20px;
-            font-size: 18px;
             background-color: #4CAF50;
             color: white;
+            font-size: 16px;
             border: none;
             border-radius: 5px;
             cursor: pointer;
             display: none;
         }
-        #restart-btn:hover {
+
+        .restart-btn:hover {
             background-color: #45a049;
         }
-        #play-btn {
-            padding: 15px 30px;
-            font-size: 24px;
-            background-color: #4CAF50;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-        #play-btn:hover {
-            background-color: #45a049;
-        }
+
     </style>
 </head>
 <body>
-    <button id="play-btn" onclick="startGame()">Play Game</button> <!-- Play Button -->
-    <canvas id="gameCanvas" width="400" height="400" style="display: none;"></canvas>
-    <div id="game-over">Game Over!</div>
-    <button id="restart-btn" onclick="restartGame()">Restart Game</button> <!-- Restart button -->
+    <div class="game-container">
+        <h1>Tic Tac Toe</h1>
+        <div class="board">
+            <!-- Create 9 cells for the board -->
+            <div class="cell" data-index="0"></div>
+            <div class="cell" data-index="1"></div>
+            <div class="cell" data-index="2"></div>
+            <div class="cell" data-index="3"></div>
+            <div class="cell" data-index="4"></div>
+            <div class="cell" data-index="5"></div>
+            <div class="cell" data-index="6"></div>
+            <div class="cell" data-index="7"></div>
+            <div class="cell" data-index="8"></div>
+        </div>
+        <div class="status">
+            <p id="status">Player X's Turn</p>
+        </div>
+        <button class="restart-btn" id="restart-btn" onclick="restartGame()">Restart Game</button>
+    </div>
 
     <script>
-        const canvas = document.getElementById('gameCanvas');
-        const ctx = canvas.getContext('2d');
-        const scale = 20;
-        const rows = canvas.height / scale;
-        const columns = canvas.width / scale;
-        let snake;
-        let food;
-        let score;
+        const cells = document.querySelectorAll('.cell');
+        const status = document.getElementById('status');
+        const restartBtn = document.getElementById('restart-btn');
+        let currentPlayer = 'X';
+        let gameBoard = ['', '', '', '', '', '', '', '', '']; // Represents the game board
         let gameOver = false;
-        let dx = scale;
-        let dy = 0;
 
-        // Initialize the game
-        function init() {
-            snake = [
-                { x: 9 * scale, y: 9 * scale }
-            ];
-            food = {
-                x: Math.floor(Math.random() * columns) * scale,
-                y: Math.floor(Math.random() * rows) * scale
-            };
-            score = 0;
-            dx = scale;
-            dy = 0;
-            gameOver = false;
-            document.getElementById('game-over').style.display = 'none';
-            document.getElementById('restart-btn').style.display = 'none'; // Hide restart button at the start
-            canvas.style.display = 'block'; // Show canvas
-            document.getElementById('play-btn').style.display = 'none'; // Hide play button
-            gameLoop();
-        }
+        // Function to handle click on a cell
+        function handleClick(event) {
+            const index = event.target.dataset.index;
 
-        // Main game loop
-        function gameLoop() {
-            if (gameOver) {
-                document.getElementById('game-over').style.display = 'block'; // Show "Game Over" message
-                document.getElementById('restart-btn').style.display = 'block'; // Show restart button
-                return;
+            if (gameBoard[index] !== '' || gameOver) {
+                return; // Ignore if the cell is already filled or the game is over
             }
 
-            setTimeout(function () {
-                ctx.clearRect(0, 0, canvas.width, canvas.height); // Clear the canvas
-                moveSnake();
-                checkCollision();
-                drawSnake();
-                drawFood();
-                drawScore();
-                gameLoop(); // Call the game loop again
-            }, 100); // Update the game every 100ms
-        }
+            // Mark the cell with the current player's symbol (X or O)
+            gameBoard[index] = currentPlayer;
+            event.target.textContent = currentPlayer;
 
-        // Move the snake
-        function moveSnake() {
-            let head = { x: snake[0].x + dx, y: snake[0].y + dy };
-            snake.unshift(head); // Add new head at the front of the snake
-
-            if (head.x === food.x && head.y === food.y) {
-                score++; // Increase score
-                food = {
-                    x: Math.floor(Math.random() * columns) * scale,
-                    y: Math.floor(Math.random() * rows) * scale
-                }; // Create a new food
-            } else {
-                snake.pop(); // Remove the last part of the snake
-            }
-        }
-
-        // Check for collisions
-        function checkCollision() {
-            let head = snake[0];
-
-            // Check if snake hits the walls
-            if (head.x < 0 || head.x >= canvas.width || head.y < 0 || head.y >= canvas.height) {
+            // Check for a win or draw
+            if (checkWin(currentPlayer)) {
+                status.textContent = `${currentPlayer} Wins!`;
                 gameOver = true;
-            }
-
-            // Check if snake collides with itself
-            for (let i = 1; i < snake.length; i++) {
-                if (head.x === snake[i].x && head.y === snake[i].y) {
-                    gameOver = true;
-                }
+                restartBtn.style.display = 'block';
+            } else if (gameBoard.every(cell => cell !== '')) {
+                status.textContent = 'It\'s a Draw!';
+                gameOver = true;
+                restartBtn.style.display = 'block';
+            } else {
+                // Switch player
+                currentPlayer = currentPlayer === 'X' ? 'O' : 'X';
+                status.textContent = `Player ${currentPlayer}'s Turn`;
             }
         }
 
-        // Draw the snake on the canvas
-        function drawSnake() {
-            snake.forEach(function (part) {
-                ctx.fillStyle = 'green';
-                ctx.fillRect(part.x, part.y, scale, scale);
+        // Function to check if a player has won
+        function checkWin(player) {
+            const winPatterns = [
+                [0, 1, 2], // Top row
+                [3, 4, 5], // Middle row
+                [6, 7, 8], // Bottom row
+                [0, 3, 6], // Left column
+                [1, 4, 7], // Middle column
+                [2, 5, 8], // Right column
+                [0, 4, 8], // Diagonal from top left to bottom right
+                [2, 4, 6]  // Diagonal from top right to bottom left
+            ];
+
+            // Check if any of the winning patterns are matched by the player
+            return winPatterns.some(pattern => {
+                return pattern.every(index => gameBoard[index] === player);
             });
         }
 
-        // Draw the food on the canvas
-        function drawFood() {
-            ctx.fillStyle = 'red';
-            ctx.fillRect(food.x, food.y, scale, scale);
-        }
-
-        // Draw the score on the canvas
-        function drawScore() {
-            ctx.fillStyle = 'black';
-            ctx.font = '16px Arial';
-            ctx.fillText('Score: ' + score, 10, 20);
-        }
-
-        // Change direction of the snake
-        function changeDirection(event) {
-            if (event.key === "ArrowLeft" && dx === 0) {
-                dx = -scale;
-                dy = 0;
-            } else if (event.key === "ArrowUp" && dy === 0) {
-                dx = 0;
-                dy = -scale;
-            } else if (event.key === "ArrowRight" && dx === 0) {
-                dx = scale;
-                dy = 0;
-            } else if (event.key === "ArrowDown" && dy === 0) {
-                dx = 0;
-                dy = scale;
-            }
-        }
-
-        // Start the game when the "Play" button is clicked
-        function startGame() {
-            init(); // Start the game
-        }
-
-        // Restart the game
+        // Function to restart the game
         function restartGame() {
-            init(); // Reinitialize the game
+            gameBoard = ['', '', '', '', '', '', '', '', ''];
+            currentPlayer = 'X';
+            gameOver = false;
+            status.textContent = `Player ${currentPlayer}'s Turn`;
+
+            // Reset the cells
+            cells.forEach(cell => {
+                cell.textContent = '';
+            });
+
+            restartBtn.style.display = 'none';
         }
 
-        // Listen for keypresses to change direction
-        document.addEventListener('keydown', changeDirection);
-
+        // Add event listeners to each cell
+        cells.forEach(cell => {
+            cell.addEventListener('click', handleClick);
+        });
     </script>
 </body>
 </html>
