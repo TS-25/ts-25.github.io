@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Snake Game - By SharpyGamerYTT</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center; background-image: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQwF7vCyesBER38CkjJHDlXe02q3zFfXQOS4w&s');
+            height: 100vh;
+            background-color: #f4f4f4;
+            font-family: Arial, sans-serif;
+        }
+        canvas {
+            border: 2px solid green;
+        }
+        #game-over {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 36px;
+            font-weight: bold;
+            color: red;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <canvas id="gameCanvas" width="400" height="400"></canvas>
+    <div id="game-over">Game Over!</div>
+    <script>
+        const canvas = document.getElementById('gameCanvas');
+        const ctx = canvas.getContext('2d');
+        const scale = 20;
+        const rows = canvas.height / scale;
+        const columns = canvas.width / scale;
+        let snake;
+        let food;
+        let score;
+        let gameOver = false;
+        let dx = scale;
+        let dy = 0; 
+        function init() {
+            snake = [
+                { x: 9 * scale, y: 9 * scale }
+            ];
+            food = {
+                x: Math.floor(Math.random() * columns) * scale,
+                y: Math.floor(Math.random() * rows) * scale
+            };
+            score = 0;
+            dx = scale;
+            dy = 0;
+            gameOver = false;
+            document.getElementById('game-over').style.display = 'none';
+            gameLoop();
+        }
+        function gameLoop() {
+            if (gameOver) {
+                document.getElementById('game-over').style.display = 'block';
+                return;
+            }
+            setTimeout(function () {
+                ctx.clearRect(0, 0, canvas.width, canvas.height); 
+                moveSnake();
+                checkCollision();
+                drawSnake();
+                drawFood();
+                drawScore();
+                gameLoop(); 
+            }, 100); 
+        }
+        function moveSnake() {
+            let head = { x: snake[0].x + dx, y: snake[0].y + dy };
+            snake.unshift(head);
+            if (head.x === food.x && head.y === food.y) {
+                score++;
+                food = {
+                    x: Math.floor(Math.random() * columns) * scale,
+                    y: Math.floor(Math.random() * rows) * scale
+                };
+            } else {
+                snake.pop();
+            }
+        }
+
+        function checkCollision() {
+            let head = snake[0];
+
+            if (head.x < 0 || head.x >= canvas.width || head.y < 0 || head.y >= canvas.height) {
+                gameOver = true;
+            }
+
+            for (let i = 1; i < snake.length; i++) {
+                if (head.x === snake[i].x && head.y === snake[i].y) {
+                    gameOver = true;
+                }
+            }
+        }
+        
+        function drawSnake() {
+            snake.forEach(function (part) {
+                ctx.fillStyle = 'green';
+                ctx.fillRect(part.x, part.y, scale, scale);
+            });
+        }
+
+        function drawFood() {
+            ctx.fillStyle = 'red';
+            ctx.fillRect(food.x, food.y, scale, scale);
+        }
+        function drawScore() {
+            ctx.fillStyle = 'black';
+            ctx.font = '16px Arial';
+            ctx.fillText('Score: ' + score, 10, 20);
+        }
+
+        function changeDirection(event) {
+            if (event.key === "ArrowLeft" && dx === 0) {
+                dx = -scale;
+                dy = 0;
+            } else if (event.key === "ArrowUp" && dy === 0) {
+                dx = 0;
+                dy = -scale;
+            } else if (event.key === "ArrowRight" && dx === 0) {
+                dx = scale;
+                dy = 0;
+            } else if (event.key === "ArrowDown" && dy === 0) {
+                dx = 0;
+                dy = scale;
+            }
+        }
+        document.addEventListener('keydown', changeDirection);
+        init();
+    </script>
+</body>
+</html>
