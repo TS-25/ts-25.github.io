@@ -4,147 +4,129 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Avatar Maker</title>
+    <title>Discord Logo Generator</title>
     <style>
         body {
             font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
+            background-color: #f4f4f4;
             display: flex;
             justify-content: center;
             align-items: center;
-            height: 100vh;
-            background-color: #f0f0f0;
+            min-height: 100vh;
+            margin: 0;
         }
+
         .container {
+            background: #fff;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
             text-align: center;
-            width: 350px;
-            padding: 20px;
-            background-color: white;
-            border-radius: 10px;
-            box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 500px;
         }
+
         h1 {
+            font-size: 2rem;
             margin-bottom: 20px;
         }
-        .avatar {
-            width: 200px;
-            height: 200px;
-            border-radius: 50%;
-            background-color: #f3f3f3;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            margin: 20px auto;
-            overflow: hidden;
-        }
-        .avatar img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-        input[type="file"] {
-            margin-top: 10px;
-        }
-        input[type="text"] {
+
+        input, button {
             width: 80%;
-            padding: 5px;
-            margin: 10px 0;
-            border: 1px solid #ccc;
+            padding: 10px;
+            margin: 10px;
             border-radius: 5px;
+            border: 1px solid #ddd;
         }
+
         button {
-            padding: 10px 20px;
             background-color: #4CAF50;
             color: white;
-            border: none;
-            border-radius: 5px;
             cursor: pointer;
         }
+
         button:hover {
             background-color: #45a049;
         }
-        .download-btn {
+
+        .logo-container {
+            margin-top: 20px;
             display: none;
+        }
+
+        img {
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+        }
+
+        .loading {
+            display: none;
+            font-size: 1.2rem;
+            color: #333;
+            margin-top: 20px;
         }
     </style>
 </head>
 <body>
 
     <div class="container">
-        <h1>Avatar Maker</h1>
-        <div class="avatar" id="avatar">
-            <img id="avatar-img" src="" alt="Avatar Image" style="display: none;">
-            <span id="avatar-placeholder">Your Image</span>
+        <h1>Discord Logo Generator</h1>
+        <p>Enter a description to generate a custom Discord logo!</p>
+        
+        <input type="text" id="description" placeholder="Enter a logo description (e.g., 'a dragon with a crown')" />
+        <button id="generate-btn">Generate Logo</button>
+
+        <div class="loading" id="loading">Generating logo...</div>
+
+        <div class="logo-container" id="logo-container">
+            <h2>Your Custom Logo</h2>
+            <img id="generated-logo" src="" alt="Generated Discord Logo" />
         </div>
-        <input type="file" id="image-upload" accept="image/*">
-        <input type="text" id="text-input" placeholder="Add text to your avatar" />
-        <button id="apply-btn">Apply Text</button>
-        <button class="download-btn" id="download-btn">Download Avatar</button>
     </div>
 
     <script>
-        const imageUpload = document.getElementById('image-upload');
-        const avatarImg = document.getElementById('avatar-img');
-        const avatarPlaceholder = document.getElementById('avatar-placeholder');
-        const textInput = document.getElementById('text-input');
-        const applyBtn = document.getElementById('apply-btn');
-        const downloadBtn = document.getElementById('download-btn');
-        const avatar = document.getElementById('avatar');
-        
-        let canvas, ctx;
+        const generateBtn = document.getElementById('generate-btn');
+        const descriptionInput = document.getElementById('description');
+        const loadingText = document.getElementById('loading');
+        const logoContainer = document.getElementById('logo-container');
+        const generatedLogo = document.getElementById('generated-logo');
 
-        // Handle image upload
-        imageUpload.addEventListener('change', function (e) {
-            const file = e.target.files[0];
-            if (file) {
-                const reader = new FileReader();
-                reader.onload = function (event) {
-                    const img = new Image();
-                    img.src = event.target.result;
-                    img.onload = function () {
-                        avatarImg.src = img.src;
-                        avatarImg.style.display = 'block';
-                        avatarPlaceholder.style.display = 'none';
-                        createCanvas(img);
-                    };
-                };
-                reader.readAsDataURL(file);
+        generateBtn.addEventListener('click', async () => {
+            const description = descriptionInput.value.trim();
+
+            if (!description) {
+                alert('Please enter a description for the logo!');
+                return;
             }
-        });
 
-        // Create canvas and draw the uploaded image
-        function createCanvas(img) {
-            canvas = document.createElement('canvas');
-            ctx = canvas.getContext('2d');
-            canvas.width = avatar.offsetWidth;
-            canvas.height = avatar.offsetHeight;
-            ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
-        }
+            // Show loading text
+            loadingText.style.display = 'block';
+            logoContainer.style.display = 'none';
 
-        // Apply text overlay
-        applyBtn.addEventListener('click', function () {
-            if (canvas && textInput.value) {
-                ctx.clearRect(0, 0, canvas.width, canvas.height);
-                const img = avatarImg;
-                ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
-                ctx.font = "20px Arial";
-                ctx.fillStyle = "white";
-                ctx.textAlign = "center";
-                ctx.fillText(textInput.value, canvas.width / 2, canvas.height - 30);
-                avatarImg.style.display = 'none';
-                avatarPlaceholder.style.display = 'none';
-                downloadBtn.style.display = 'inline-block';
+            try {
+                const response = await fetch('/generate-logo', {  // Assuming you have an API endpoint on the back-end
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ description })
+                });
+
+                const data = await response.json();
+                if (data.success) {
+                    // Show the generated image
+                    generatedLogo.src = data.logoUrl;
+                    loadingText.style.display = 'none';
+                    logoContainer.style.display = 'block';
+                } else {
+                    alert('Failed to generate logo. Try again!');
+                    loadingText.style.display = 'none';
+                }
+            } catch (error) {
+                alert('Error generating logo. Please try again later.');
+                loadingText.style.display = 'none';
             }
-        });
-
-        // Download the avatar as an image
-        downloadBtn.addEventListener('click', function () {
-            const dataUrl = canvas.toDataURL('image/png');
-            const a = document.createElement('a');
-            a.href = dataUrl;
-            a.download = 'avatar.png';
-            a.click();
         });
     </script>
 
