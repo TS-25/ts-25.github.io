@@ -15,6 +15,23 @@
             align-items: center;
             height: 100vh;
             background-color: #f4f4f4;
+            background-image: url('https://www.w3schools.com/w3images/snow.jpg'); /* Add your background image URL */
+            background-size: cover;
+            background-position: center;
+            animation: backgroundAnimation 10s ease infinite; /* Background animation */
+        }
+
+        /* Keyframe for background animation */
+        @keyframes backgroundAnimation {
+            0% {
+                background-position: center;
+            }
+            50% {
+                background-position: left top;
+            }
+            100% {
+                background-position: center;
+            }
         }
 
         .game-container {
@@ -22,7 +39,7 @@
             border: 2px solid #333;
             width: 300px;
             padding: 20px;
-            background-color: white;
+            background-color: rgba(255, 255, 255, 0.8); /* Slight transparency for readability */
             border-radius: 8px;
         }
 
@@ -104,6 +121,7 @@
         let currentPlayer = 'X';  
         let gameBoard = ['', '', '', '', '', '', '', '', ''];
         let gameOver = false;
+
         function handleClick(event) {
             const index = event.target.dataset.index;
 
@@ -163,7 +181,6 @@
                 [2, 4, 6]  
             ];
 
-          
             return winPatterns.some(pattern => {
                 return pattern.every(index => gameBoard[index] === player);
             });
