@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Avatar Maker</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f0f0f0;
+        }
+        .container {
+            text-align: center;
+            width: 350px;
+            padding: 20px;
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            margin-bottom: 20px;
+        }
+        .avatar {
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+            background-color: #f3f3f3;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 20px auto;
+            overflow: hidden;
+        }
+        .avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        input[type="file"] {
+            margin-top: 10px;
+        }
+        input[type="text"] {
+            width: 80%;
+            padding: 5px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        button {
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        .download-btn {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>Avatar Maker</h1>
+        <div class="avatar" id="avatar">
+            <img id="avatar-img" src="" alt="Avatar Image" style="display: none;">
+            <span id="avatar-placeholder">Your Image</span>
+        </div>
+        <input type="file" id="image-upload" accept="image/*">
+        <input type="text" id="text-input" placeholder="Add text to your avatar" />
+        <button id="apply-btn">Apply Text</button>
+        <button class="download-btn" id="download-btn">Download Avatar</button>
+    </div>
+
+    <script>
+        const imageUpload = document.getElementById('image-upload');
+        const avatarImg = document.getElementById('avatar-img');
+        const avatarPlaceholder = document.getElementById('avatar-placeholder');
+        const textInput = document.getElementById('text-input');
+        const applyBtn = document.getElementById('apply-btn');
+        const downloadBtn = document.getElementById('download-btn');
+        const avatar = document.getElementById('avatar');
+        
+        let canvas, ctx;
+
+        // Handle image upload
+        imageUpload.addEventListener('change', function (e) {
+            const file = e.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function (event) {
+                    const img = new Image();
+                    img.src = event.target.result;
+                    img.onload = function () {
+                        avatarImg.src = img.src;
+                        avatarImg.style.display = 'block';
+                        avatarPlaceholder.style.display = 'none';
+                        createCanvas(img);
+                    };
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+
+        // Create canvas and draw the uploaded image
+        function createCanvas(img) {
+            canvas = document.createElement('canvas');
+            ctx = canvas.getContext('2d');
+            canvas.width = avatar.offsetWidth;
+            canvas.height = avatar.offsetHeight;
+            ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+        }
+
+        // Apply text overlay
+        applyBtn.addEventListener('click', function () {
+            if (canvas && textInput.value) {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                const img = avatarImg;
+                ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+                ctx.font = "20px Arial";
+                ctx.fillStyle = "white";
+                ctx.textAlign = "center";
+                ctx.fillText(textInput.value, canvas.width / 2, canvas.height - 30);
+                avatarImg.style.display = 'none';
+                avatarPlaceholder.style.display = 'none';
+                downloadBtn.style.display = 'inline-block';
+            }
+        });
+
+        // Download the avatar as an image
+        downloadBtn.addEventListener('click', function () {
+            const dataUrl = canvas.toDataURL('image/png');
+            const a = document.createElement('a');
+            a.href = dataUrl;
+            a.download = 'avatar.png';
+            a.click();
+        });
+    </script>
+
+</body>
+</html>
