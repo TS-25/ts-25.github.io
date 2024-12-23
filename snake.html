@@ -41,7 +41,7 @@
             border: none;
             border-radius: 5px;
             cursor: pointer;
-            display: none; /* Initially hidden */
+            display: none;
         }
         #restart-btn:hover {
             background-color: #45a049;
@@ -64,8 +64,6 @@
         let gameOver = false;
         let dx = scale;
         let dy = 0; 
-
-        // Initialize the game
         function init() {
             snake = [
                 { x: 9 * scale, y: 9 * scale }
@@ -79,55 +77,50 @@
             dy = 0;
             gameOver = false;
             document.getElementById('game-over').style.display = 'none';
-            document.getElementById('restart-btn').style.display = 'none'; // Hide restart button at the start
+            document.getElementById('restart-btn').style.display = 'none'; 
             gameLoop();
         }
 
-        // Main game loop
         function gameLoop() {
             if (gameOver) {
-                document.getElementById('game-over').style.display = 'block'; // Show "Game Over" message
-                document.getElementById('restart-btn').style.display = 'block'; // Show restart button
+                document.getElementById('game-over').style.display = 'block'; 
+                document.getElementById('restart-btn').style.display = 'block'; 
                 return;
             }
 
             setTimeout(function () {
-                ctx.clearRect(0, 0, canvas.width, canvas.height); // Clear the canvas
+                ctx.clearRect(0, 0, canvas.width, canvas.height); 
                 moveSnake();
                 checkCollision();
                 drawSnake();
                 drawFood();
                 drawScore();
-                gameLoop(); // Call the game loop again
-            }, 100); // Update the game every 100ms
+                gameLoop(); 
+            }, 100); 
         }
 
-        // Move the snake
         function moveSnake() {
             let head = { x: snake[0].x + dx, y: snake[0].y + dy };
-            snake.unshift(head); // Add new head at the front of the snake
+            snake.unshift(head); 
 
             if (head.x === food.x && head.y === food.y) {
-                score++; // Increase score
+                score++; 
                 food = {
                     x: Math.floor(Math.random() * columns) * scale,
                     y: Math.floor(Math.random() * rows) * scale
-                }; // Create a new food
+                }; 
             } else {
-                snake.pop(); // Remove the last part of the snake
+                snake.pop(); 
             }
         }
-
-        // Check for collisions
+        
         function checkCollision() {
             let head = snake[0];
 
-            // Check if snake hits the walls
             if (head.x < 0 || head.x >= canvas.width || head.y < 0 || head.y >= canvas.height) {
                 gameOver = true;
             }
 
-            // Check if snake collides with itself
             for (let i = 1; i < snake.length; i++) {
                 if (head.x === snake[i].x && head.y === snake[i].y) {
                     gameOver = true;
@@ -135,7 +128,6 @@
             }
         }
 
-        // Draw the snake on the canvas
         function drawSnake() {
             snake.forEach(function (part) {
                 ctx.fillStyle = 'green';
@@ -143,20 +135,17 @@
             });
         }
 
-        // Draw the food on the canvas
         function drawFood() {
             ctx.fillStyle = 'red';
             ctx.fillRect(food.x, food.y, scale, scale);
         }
 
-        // Draw the score on the canvas
         function drawScore() {
             ctx.fillStyle = 'black';
             ctx.font = '16px Arial';
             ctx.fillText('Score: ' + score, 10, 20);
         }
 
-        // Change direction of the snake
         function changeDirection(event) {
             if (event.key === "ArrowLeft" && dx === 0) {
                 dx = -scale;
@@ -172,16 +161,12 @@
                 dy = scale;
             }
         }
-
-        // Restart the game
+        
         function restartGame() {
-            init(); // Reinitialize the game
+            init(); 
         }
 
-        // Listen for keypresses to change direction
         document.addEventListener('keydown', changeDirection);
-
-        // Start the game when the page loads
         init();
     </script>
 </body>
