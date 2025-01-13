@@ -8,7 +8,7 @@
 /* Body Styling */
 body {
     font-family: 'Poppins', sans-serif;
-    background: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSUzKzGYW5q1ODErFAhCilgD1Uabiobm0A9Rg&s?finance,loan') no-repeat center center fixed; /* Background image */
+    background: url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSUzKzGYW5q1ODErFAhCilgD1Uabiobm0A9Rg&s') no-repeat center center fixed; /* Background image */
     background-size: cover; /* Ensure the background covers the whole screen */
     display: flex;
     justify-content: center;
