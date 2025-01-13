@@ -8,17 +8,19 @@
 /* Body Styling */
 body {
     font-family: 'Poppins', sans-serif;
-    background: linear-gradient(45deg, #6e7bff, #54d1f7);
+    background: url('https://wallpapers.com/images/hd/cool-photos-background-1920-x-1080-9cnqcjs5o3rb8raa.jpg') no-repeat center center fixed; /* Background image */
+    background-size: cover; /* Ensure the background covers the whole screen */
     display: flex;
     justify-content: center;
     align-items: center;
     height: 100vh;
     color: #fff;
+    overflow: hidden; /* Prevent scrolling when background image is large */
 }
 
 /* Container Styling */
 .container {
-    background: #fff;
+    background: rgba(255, 255, 255, 0.85); /* Slight transparency for readability */
     padding: 30px;
     border-radius: 12px;
     box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
