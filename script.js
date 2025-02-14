@@ -1,22 +1,49 @@
-function calculateEMI() {
-    // Get input values
-    const principal = parseFloat(document.getElementById('loanAmount').value);
-    const annualInterestRate = parseFloat(document.getElementById('interestRate').value);
-    const tenureInYears = parseFloat(document.getElementById('tenure').value);
+// toggle icon navbar
+let menuIcon = document.querySelector('#menu-icon');
+let navbar = document.querySelector('.navbar');
 
-    if (isNaN(principal) || isNaN(annualInterestRate) || isNaN(tenureInYears) || principal <= 0 || annualInterestRate <= 0 || tenureInYears <= 0) {
-        alert("Please enter valid positive values.");
-        return;
-    }
+menuIcon.onclick = () => {
+    menuIcon.classList.toggle('bx-x');
+    navbar.classList.toggle('active');
+}
 
-    // Convert annual interest rate to monthly and tenure to months
-    const monthlyInterestRate = annualInterestRate / 100 / 12;
-    const tenureInMonths = tenureInYears * 12;
+// scroll sections
+let sections = document.querySelectorAll('section');
+let navLinks = document.querySelectorAll('header nav a');
 
-    // EMI Calculation formula: EMI = [P * r * (1 + r)^n] / [(1 + r)^n - 1]
-    const emi = (principal * monthlyInterestRate * Math.pow(1 + monthlyInterestRate, tenureInMonths)) / 
-                (Math.pow(1 + monthlyInterestRate, tenureInMonths) - 1);
+window.onscroll = () => {
+    sections.forEach(sec => {
+        let top = window.scrollY;
+        let offset = sec.offsetTop - 100;
+        let height = sec.offsetHeight;
+        let id = sec.getAttribute('id');
 
-    // Display the result
-    document.getElementById('emiResult').innerHTML = `EMI: ₹${emi.toFixed(2)}`;
+        if(top >= offset && top < offset + height) {
+            // active navbar links
+            navLinks.forEach(links => {
+                links.classList.remove('active');
+                document.querySelector('header nav a[href*=' + id + ']').classList.add('active');
+            });
+            // active sections for animation on scroll
+            sec.classList.add('show-animate');
+        }
+        // if want to animation that repeats on scroll use this
+        else {
+            sec.classList.remove('show-animate');
+        }
+    });
+
+    // sticky navbar
+    let header = document.querySelector('header');
+
+    header.classList.toggle('sticky', window.scrollY > 100);
+
+    // remove toggle icon and navbar when click navbar links (scroll)
+    menuIcon.classList.remove('bx-x');
+    navbar.classList.remove('active');
+
+    // animation footer on scroll
+    let footer = document.querySelector('footer');
+
+    footer.classList.toggle('show-animate', this.innerHeight + this.scrollY >= document.scrollingElement.scrollHeight);
 }
