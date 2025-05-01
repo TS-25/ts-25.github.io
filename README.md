@@ -1,8 +1,8 @@
 ## ╭──────────── ·﻿ ﻿· ﻿·﻿ ﻿✦
-## │ ➜  https://SharpyGamerYTT.github.io
+## │ ➜  https://ts-25.github.io
 ## │ ➜  Experienced Developer & Programmer!
 ## │ ➜  Join Our Discord Community!
-## │ ➜  https://discord.gg/9FHXRMUs49
+## │ ➜  https://discord.gg/WPzC5E8D6k
 ## ╰─────────── ·﻿ ﻿·﻿ ﻿﻿✦
 
 
